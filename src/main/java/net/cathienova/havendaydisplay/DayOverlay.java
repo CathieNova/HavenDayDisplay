@@ -41,6 +41,3 @@ public class DayOverlay
         event.getGuiGraphics().drawString(font,textComponent, x, y, color.getRGB());
     }
 }
-
-
-

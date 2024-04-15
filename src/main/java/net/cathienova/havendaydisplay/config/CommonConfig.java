@@ -17,7 +17,4 @@ public class CommonConfig
         xPos = builder.comment("The x position of the day overlay.").defineInRange("xPos", 3, 1, 10000);
         yPos = builder.comment("The y position of the day overlay.").defineInRange("yPos", 3, 1, 10000);
     }
-
-
-
 }
