@@ -1,13 +1,13 @@
 package net.cathienova.havendaydisplay;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.level.Level;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -25,11 +25,11 @@ public class DayOverlay
     }
 
     @SubscribeEvent
-    public void onRenderGameOverlay(RenderGuiEvent event)
+    public void onRenderGameOverlay(RenderGameOverlayEvent.Text event)
     {
         if (!enableDayOverlay) return;
 
-        PoseStack poseStack = event.getPoseStack();
+        PoseStack poseStack = event.getMatrixStack();
         Minecraft minecraft = Minecraft.getInstance();
         if (minecraft.level == null) return;
 
@@ -37,13 +37,12 @@ public class DayOverlay
         int currentDay = (int) (worldTime / 24000);
 
         Font font = minecraft.font;
-        Component textComponent = Component.literal("Day " + currentDay);
+        Component textComponent = new TextComponent("Day " + currentDay);
         Color color = new Color(255, 255, 255);
 
         int colorValue = color.getRGB();
+        RenderSystem.enableBlend();
         font.draw(poseStack, textComponent, xPos, yPos, colorValue);
+        RenderSystem.disableBlend();
     }
 }
-
-
-
