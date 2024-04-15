@@ -4,14 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
 
 import java.awt.*;
 
-import static net.cathienova.havendaydisplay.config.HavenDayDisplayConfig.*;
+import static net.cathienova.havendaydisplay.config.CommonConfig.*;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT, modid = HavenDayDisplay.MODID)
 public class DayOverlay
@@ -23,17 +23,17 @@ public class DayOverlay
     }
 
     @SubscribeEvent
-    public void onRenderGameOverlay(RenderGuiOverlayEvent event)
+    public static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event)
     {
-        if (!enableDayOverlay) return;
+        if (!CONFIG.enableDayOverlay.get()) return;
 
         Level level = CLIENT.level;
         assert level != null;
         long worldTime = level.getDayTime();
         int currentDay = (int) (worldTime / 24000);
 
-        int x = xPos;
-        int y = yPos;
+        int x = CONFIG.xPos.get();
+        int y = CONFIG.yPos.get();
         Color color = new Color(255,255,255);
 
         Component textComponent = Component.nullToEmpty("Day " + currentDay);
