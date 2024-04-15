@@ -1,10 +1,12 @@
 package net.cathienova.havendaydisplay;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RenderGuiEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,22 +25,23 @@ public class DayOverlay
     }
 
     @SubscribeEvent
-    public void onRenderGameOverlay(RenderGuiOverlayEvent event)
+    public void onRenderGameOverlay(RenderGuiEvent event)
     {
         if (!enableDayOverlay) return;
 
-        Level level = CLIENT.level;
-        assert level != null;
-        long worldTime = level.getDayTime();
+        PoseStack poseStack = event.getPoseStack();
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.level == null) return;
+
+        long worldTime = minecraft.level.getDayTime();
         int currentDay = (int) (worldTime / 24000);
 
-        int x = xPos;
-        int y = yPos;
-        Color color = new Color(255,255,255);
+        Font font = minecraft.font;
+        Component textComponent = Component.literal("Day " + currentDay);
+        Color color = new Color(255, 255, 255);
 
-        Component textComponent = Component.nullToEmpty("Day " + currentDay);
-        Font font = CLIENT.font;
-        event.getGuiGraphics().drawString(font,textComponent, x, y, color.getRGB());
+        int colorValue = color.getRGB();
+        font.draw(poseStack, textComponent, xPos, yPos, colorValue);
     }
 }
 
