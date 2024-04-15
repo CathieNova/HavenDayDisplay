@@ -3,12 +3,11 @@ modLoader="javafml"
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
 [[mods]]
-modId="havendaydisplay"
-version="${mod_version}"
-displayName="${mod_name}"
-authors="${mod_authors}"
-
-description='''${mod_description}'''
+    modId="havendaydisplay"
+    version="${mod_version}"
+    displayName="${mod_name}"
+    authors="${mod_authors}"
+    description='''${mod_description}'''
 [[dependencies.havendaydisplay]]
     modId="forge"
     mandatory=true
