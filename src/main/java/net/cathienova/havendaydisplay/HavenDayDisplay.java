@@ -5,7 +5,9 @@ import net.cathienova.havendaydisplay.config.CommonConfig;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
@@ -20,10 +22,10 @@ public class HavenDayDisplay
     public static final String MODID = "havendaydisplay";
     private static final Logger LOGGER = LogUtils.getLogger();
 
-    public HavenDayDisplay(IEventBus bus)
+    public HavenDayDisplay(IEventBus bus, ModContainer modContainer)
     {
         bus.addListener(this::commonSetup);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.COMMON, CommonConfig.SPEC);
 
         NeoForge.EVENT_BUS.register(this);
     }
@@ -37,7 +39,7 @@ public class HavenDayDisplay
     {
     }
 
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
     public static class ClientModEvents
     {
         @SubscribeEvent

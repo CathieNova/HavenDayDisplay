@@ -6,14 +6,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
-import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
 
 import java.awt.*;
 
 import static net.cathienova.havendaydisplay.config.CommonConfig.*;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT, modid = HavenDayDisplay.MODID)
+@EventBusSubscriber(value = Dist.CLIENT, modid = HavenDayDisplay.MODID)
 public class DayOverlay
 {
     private static final Minecraft CLIENT = Minecraft.getInstance();
@@ -23,7 +23,7 @@ public class DayOverlay
     }
 
     @SubscribeEvent
-    public static void onRenderGameOverlay(RenderGuiOverlayEvent.Pre event)
+    public static void onRenderGameOverlay(RenderGuiLayerEvent.Pre event)
     {
         if (!CONFIG.enableDayOverlay.get()) return;
 
