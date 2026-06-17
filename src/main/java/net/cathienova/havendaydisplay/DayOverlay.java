@@ -7,7 +7,7 @@ import net.minecraft.world.level.Level;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.client.event.RenderGuiLayerEvent;
+import net.neoforged.neoforge.client.event.RenderGuiEvent;
 
 import java.awt.*;
 
@@ -16,28 +16,28 @@ import static net.cathienova.havendaydisplay.config.CommonConfig.*;
 @EventBusSubscriber(value = Dist.CLIENT, modid = HavenDayDisplay.MODID)
 public class DayOverlay
 {
-    private static final Minecraft CLIENT = Minecraft.getInstance();
-
     public DayOverlay()
     {
     }
 
     @SubscribeEvent
-    public static void onRenderGameOverlay(RenderGuiLayerEvent.Pre event)
+    public static void onRenderGameOverlay(RenderGuiEvent.Post event)
     {
         if (!CONFIG.enableDayOverlay.get()) return;
 
-        Level level = CLIENT.level;
-        assert level != null;
-        long worldTime = level.getDayTime();
+        Minecraft client = Minecraft.getInstance();
+        Level level = client.level;
+        if (level == null) return;
+
+        long worldTime = level.getOverworldClockTime();
         int currentDay = (int) (worldTime / 24000);
 
         int x = CONFIG.xPos.get();
         int y = CONFIG.yPos.get();
         Color color = new Color(255,255,255);
 
-        Component textComponent = Component.nullToEmpty("Day " + currentDay);
-        Font font = CLIENT.font;
-        event.getGuiGraphics().drawString(font,textComponent, x, y, color.getRGB());
+        Component textComponent = Component.translatable("overlay.havendaydisplay.day", currentDay);
+        Font font = client.font;
+        event.getGuiGraphics().text(font, textComponent, x, y, color.getRGB());
     }
 }
